@@ -1,35 +1,48 @@
-defstruct Timing do
-  defstruct name: "Default", start: DateTime.utc_now, end: DateTime.utc_now 
-end
 defmodule ServerTiming do
+  defstruct name: "default", start_time: DateTime.utc_now(), end_time: nil
+
   @moduledoc """
   Documentation for ServerTiming.
   """
   @doc """
-  ## Examples
-
-      iex> ServerTiming.hello
-      :world
-
+    Registers start time for a specified `"name"`
   """
-  def start(conn, name) do
-    new_server_timings = conn
-    |> Map.get("server_timings")
-    |> Map.put(name, %Timing{name: name})
-
-    new_server_timings.put("server_timings", new_server_timings)
+  @spec start(Plug.Conn, String.t()) :: Plug.Conn
+  def start(conn, name) when is_bitstring(name) do
+    start_time(conn, String.to_atom(name))
   end
 
-  def stop(conn, name) do
-    server_timing = conn
-    |> Map.get("server_timings")
-    |> Map.get(name)
+  @spec start(Plug.Conn, Atom.t()) :: Plug.Conn
+  def start(conn, name) when is_atom(name) do
+    start_time(conn, name)
+  end
 
-    new_server_timing = %{ server_timing | end = DateTime.utc_now }
-    conn
-    |> Map.put("server_timings")
-    |> Map.put(name, new_server_timing)
+  @doc """
+    Registers stop time for a specified `"name"`
+  """
+  @spec stop(Plug.Conn, String.t()) :: Plug.Conn
+  def stop(conn, name) when is_bitstring(name) do
+    stop_time(conn, String.to_atom(name))
+  end
 
-    conn
+  @spec stop(Plug.Conn, Atom.t()) :: Plug.Conn
+  def stop(conn, name) when is_atom(name) do
+    stop_time(conn, name)
+  end
+
+  defp start_time(conn, name) do
+    Plug.Conn.assign(
+      conn,
+      :server_timing,
+      conn.assigns[:server_timing] |> put_in([name], %ServerTiming{name: name})
+    )
+  end
+
+  defp stop_time(conn, name) do
+    Plug.Conn.assign(
+      conn,
+      :server_timing,
+      conn.assigns[:server_timing] |> update_in([name], &%{&1 | end_time: DateTime.utc_now()})
+    )
   end
 end
