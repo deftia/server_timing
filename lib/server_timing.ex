@@ -1,5 +1,5 @@
 defmodule ServerTiming do
-  defstruct name: "default", start_time: DateTime.utc_now(), end_time: nil
+  defstruct name: "default", start_time: nil, end_time: nil
 
   @moduledoc """
   Documentation for ServerTiming.
@@ -34,7 +34,8 @@ defmodule ServerTiming do
     Plug.Conn.assign(
       conn,
       :server_timing,
-      conn.assigns[:server_timing] |> put_in([name], %ServerTiming{name: name})
+      conn.assigns[:server_timing]
+      |> put_in([name], %ServerTiming{name: name, start_time: DateTime.utc_now()})
     )
   end
 

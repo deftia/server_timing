@@ -4,6 +4,23 @@ defmodule ServerTiming.Plug do
   def init(options), do: options
 
   def call(conn, _opts) do
-    assign(conn, :server_timing, %{})
+    conn = assign(conn, :server_timing, [])
+
+    register_before_send(conn, fn conn ->
+      server_timings = conn.assigns[:server_timing]
+
+      header_data =
+        Enum.reduce(server_timings, [], fn {_, timing}, acc ->
+          if timing.start_time != nil and timing.end_time != nil do
+            diff = DateTime.diff(timing.end_time, timing.start_time, :millisecond)
+            acc ++ ["#{timing.name}; dur=#{diff}"]
+          else
+            acc
+          end
+        end)
+        |> Enum.join(", ")
+
+      put_resp_header(conn, "server-timing", header_data)
+    end)
   end
 end
