@@ -1,7 +1,7 @@
 defmodule ServerTiming.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
 
   def project do
     [
@@ -38,8 +38,8 @@ defmodule ServerTiming.MixProject do
   end
 
   defp docs_config do
-    [extras: ["README.md": [title: "Overview", path: "overview"]],
-     main: "overview",
+    [extras: ["README.md"],
+     main: "ServerTiming",
      source_ref: "v#{@version}",
      source_url: "https://github.com/deftia/server_timing"]
   end
