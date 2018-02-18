@@ -7,7 +7,10 @@ defmodule ServerTiming.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package(),
+      name: "server_timing",
+      source_url: "https://github.com/deftia/server_timing"
     ]
   end
 
@@ -22,6 +25,16 @@ defmodule ServerTiming.MixProject do
   defp deps do
     [
       {:plug, "~> 1.4"}
+    ]
+  end
+
+  defp package do
+    [
+      name: "server_timing",
+      files: ["lib", "priv", "mix.exs", "README*", "readme", "LICENSE*", "license*"],
+      maintainers: ["Abdulsattar Mohammed", "Gautham Ramachandran"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/deftia/server_timing"}
     ]
   end
 end
