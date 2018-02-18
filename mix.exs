@@ -1,7 +1,7 @@
 defmodule ServerTiming.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.3"
 
   def project do
     [
@@ -13,8 +13,7 @@ defmodule ServerTiming.MixProject do
       deps: deps(),
       package: package(),
       name: "server_timing",
-      docs: docs_config(),
-      source_url: "https://github.com/deftia/server_timing"
+      docs: docs_config()
     ]
   end
 
@@ -38,8 +37,8 @@ defmodule ServerTiming.MixProject do
   end
 
   defp docs_config do
-    [extras: ["README.md"],
-     main: "ServerTiming",
+    [extras: ["README.md": [title: "Overview", path: "api-reference"]],
+     main: "api-reference",
      source_ref: "v#{@version}",
      source_url: "https://github.com/deftia/server_timing"]
   end
