@@ -1,9 +1,28 @@
 defmodule ServerTiming do
-  defstruct name: "default", start_time: nil, end_time: nil
-
   @moduledoc """
-  Documentation for ServerTiming.
+  ServerTiming is the main module, for configuring start and end time,
+  for an unique name / service name.
+
+  ## Usage
+
+  - Once, you are done setting up the plug in your router.
+
+  defmodule MyModule do
+    alias ServerTiming
+    alias MyModule.HelloService
+
+    def myServiceCall(conn, message) do
+      ServerTiming.start(conn, "hello-service")
+      HelloService.doSomething(message)
+      ServerTiming.stop(conn, "hello-service")
+    end
+  end
+
+  The above will register `hello-service` tag in your `conn` and set server-timing header for the `hello-service`
   """
+
+  defstruct name: "default", start_time: nil, end_time: nil
+  
   @doc """
     Registers start time for a specified `"name"`
   """
