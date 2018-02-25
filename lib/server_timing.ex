@@ -7,6 +7,7 @@ defmodule ServerTiming do
 
   - Once, you are done setting up the plug in your router.
 
+  ```
   defmodule MyModule do
     alias ServerTiming
     alias MyModule.HelloService
@@ -17,6 +18,7 @@ defmodule ServerTiming do
       ServerTiming.stop(conn, "hello-service")
     end
   end
+  ```
 
   The above will register `hello-service` tag in your `conn` and set server-timing header for the `hello-service`
   """

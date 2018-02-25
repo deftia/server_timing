@@ -1,16 +1,17 @@
 defmodule ServerTiming.Plug do
   @moduledoc """
   A plug to setup server_timing initial store, 
-  and to set server-timing.
+  and to set `server-timing` header.
 
   ## Usage
 
   Setup the plug in your app, is as simple as.
-
+  ```
   defmodule Router do
     use Plug.Router
     plug ServerTiming.Plug
   end
+  ```
   """
   import Plug.Conn
 
